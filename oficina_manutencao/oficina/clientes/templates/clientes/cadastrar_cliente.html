@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'clientes/css/styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Cliente</title>
+</head>
+<body>
+    <h1>Cadastrar Cliente</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="id_nome">Nome:</label>
+        {{ form.nome }} <br>
+
+        <label for="id_cpf">CPF:</label>
+        {{ form.cpf }} <br>
+
+        <label for="id_telefone">Telefone:</label>
+        {{ form.telefone }} <br>
+
+        <label for="id_cep">CEP:</label>
+        {{ form.cep }} 
+        <button type="button" onclick="buscarEndereco()">Buscar Endereço</button>
+        <br>
+
+        <label for="id_endereco">Endereço:</label>
+        {{ form.endereco }} <br>
+
+        <label for="id_numero">Número:</label>
+        {{ form.numero }} <br>
+
+        <label for="id_complemento">Complemento:</label>
+        {{ form.complemento }} <br>
+
+        <label for="id_bairro">Bairro:</label>
+        {{ form.bairro }} <br>
+
+        <label for="id_cidade">Cidade:</label>
+        {{ form.cidade }} <br>
+
+        <label for="id_estado">Estado:</label>
+        {{ form.estado }} <br>
+
+        <button type="submit">Salvar</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar</a>
+
+    <script>
+        function buscarEndereco() {
+            let cep = document.getElementById("id_cep").value.replace(/\D/g, '');
+            if (cep.length !== 8) {
+                alert("CEP inválido! Digite um CEP com 8 dígitos.");
+                return;
+            }
+
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.erro) {
+                        alert("CEP não encontrado!");
+                    } else {
+                        document.getElementById("id_endereco").value = data.logradouro || "";
+                        document.getElementById("id_bairro").value = data.bairro || "";
+                        document.getElementById("id_cidade").value = data.localidade || "";
+                        document.getElementById("id_estado").value = data.uf || "";
+                    }
+                })
+                .catch(error => alert("Erro ao buscar o CEP!"));
+        }
+    </script>
+</body>
+</html>
+

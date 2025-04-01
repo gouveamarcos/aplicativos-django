@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'ordens/css/styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisar OS</title>
+</head>
+<body>
+    <h1>Pesquisar Ordens de Serviço</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="cpf">Digite o CPF do Cliente:</label>
+        <input type="text" name="cpf" value="{{ cpf_digitado }}" required>
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    {% if ordens is not None %}
+        {% if ordens %}
+            <h2>Ordens de Serviço encontradas:</h2>
+            <ul>
+                {% for os in ordens %}
+                    <li>OS {{ os.numero_os }} - {{ os.tipo_aparelho }} ({{ os.status }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nenhuma OS encontrada para este CPF.</p>
+        {% endif %}
+    {% endif %}
+
+    <a href="{% url 'home' %}">Voltar</a>
+</body>
+</html>

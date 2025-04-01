@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'ordens/css/styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrir Ordem de Serviço</title>
+</head>
+<body>
+    <h1>Abrir Ordem de Serviço</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar Ordem de Serviço</button>
+    </form>
+    <a href="{% url 'home' %}">Voltar</a>
+</body>
+</html>
